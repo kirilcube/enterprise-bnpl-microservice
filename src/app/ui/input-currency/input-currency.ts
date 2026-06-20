@@ -10,6 +10,7 @@ import {raw} from 'express';
 })
 export class InputCurrency {
   placeholder = input<string>("1 000");
+  currency = input<string>("MXN");
   inputValue = signal<string>("");
   realValue = model<number>(0)
 
