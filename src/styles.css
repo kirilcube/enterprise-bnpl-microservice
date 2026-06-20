@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @theme {
+  --font-sans: "Inter", sans-serif;
+
   --color-black: #000000;
   --color-total-primary: #121416;
   --color-primary: var(--color-total-primary);
@@ -38,4 +40,6 @@
 
 :root {
   background: var(--color-total-white);
+
+  @apply font-sans text-gray-900;
 }

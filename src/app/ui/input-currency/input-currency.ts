@@ -1,5 +1,6 @@
 import {Component, input, model, signal} from '@angular/core';
 import {FormsModule} from '@angular/forms';
+import {raw} from 'express';
 
 @Component({
   selector: 'input-currency',
@@ -8,36 +9,68 @@ import {FormsModule} from '@angular/forms';
   styleUrl: './input-currency.css',
 })
 export class InputCurrency {
-  placeholder = input<string>("1000");
+  placeholder = input<string>("1 000");
   inputValue = signal<string>("");
   realValue = model<number>(0)
 
   handleInput(e: Event) {
     const inputElement = e.target as HTMLInputElement;
     let rawValue = inputElement.value;
+    let cursorPosition = inputElement.selectionStart || 0;
+
+    // 1. BEFORE FORMATTING: Count how many numbers/dots/commas are behind the cursor
+    let digitsBeforeCursor = 0;
+    for (let i = 0; i < cursorPosition; i++) {
+      if (/[0-9.,]/.test(rawValue[i])) {
+        digitsBeforeCursor++;
+      }
+    }
 
     // Convert commas to dots
     rawValue = rawValue.replace(/,/g, '.');
 
     // Remove any characters that are NOT numbers or dots
     rawValue = rawValue.replace(/[^0-9.]/g, '');
-
-    // Handle multiple dots and limit to 2 decimal places
-    const parts = rawValue.split('.');
-    if (parts.length > 1) {
-      // If the user types ".5", automatically format it as "0.5"
-      const integerPart = parts[0] === '' ? '0' : parts[0];
-
-      // Grab only the first two characters after the dot
-      const decimalPart = parts[1].substring(0, 2);
-
-      // Rebuild the string (this also naturally discards any extra dots)
-      rawValue = `${integerPart}.${decimalPart}`;
+    while(rawValue[0] === '0' && rawValue.length > 1) {
+      rawValue = rawValue.slice(1);
     }
 
-    inputElement.value = rawValue;
-    this.inputValue.set(rawValue);
+    const parts = rawValue.split('.');
+    let output = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+    if (parts.length > 1) {
+      if (!output) {
+        output = '0';
+        digitsBeforeCursor++;
+      }
+      output += `.${parts[1].substring(0, 2)}`;
+    }
 
-    this.realValue.set(parseFloat(rawValue) || 0);
+    // Update the visual input and your signal
+    inputElement.value = output;
+    this.inputValue.set(output);
+
+    // 2. AFTER FORMATTING: Place cursor after that exact same number of digits/dots
+    let newCursorPosition = 0;
+    let digitsCounted = 0;
+
+    for (let i = 0; i < output.length; i++) {
+      // Once we've passed the same number of digits as before, stop moving the cursor
+      if (digitsCounted === digitsBeforeCursor) {
+        break;
+      }
+      // Only count numbers and dots, ignore the formatting spaces
+      if (/[0-9.]/.test(output[i])) {
+        digitsCounted++;
+      }
+      newCursorPosition++;
+    }
+
+    // Apply the corrected cursor position
+    inputElement.setSelectionRange(newCursorPosition, newCursorPosition);
+
+    // Update real value
+    this.realValue.set(parseFloat(
+      output.replaceAll(" ", "")
+    ) || 0);
   }
 }
