@@ -1,1 +1,35 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  /*--ws-color-black: #000000;*/
+  /*--ws-color-total-primary: #121416;*/
+  /*--ws-color-primary: var(--ws-color-total-primary);*/
+  /*--ws-color-gray: #27282a;*/
+  /*--ws-color-secondary: rgba(23, 28, 38, 0.45);*/
+  /*--ws-color-tertiary: rgba(0, 12, 36, 0.22);*/
+  /*--ws-color-neutral-120: rgba(33, 60, 112, 0.11);*/
+  /*--ws-color-neutral-100: rgba(0, 37, 112, 0.04);*/
+  /*--ws-color-neutral-80: rgba(75, 113, 189, 0.04);*/
+  /*--ws-color-neutral-bg: #f7f8fb;*/
+  /*--ws-color-total-white: #ffffff;*/
+  /*--ws-color-white: var(--ws-color-total-white);*/
+  /*--ws-color-white-black: #ffffff;*/
+  /*--ws-color-white-primary: #ffffff;*/
+  /*--ws-color-white-on-dark: #f2f4f8;*/
+  /*--ws-color-white-gray: #ffffff;*/
+  /*--ws-color-neutral-120-on-dark: rgba(229, 238, 255, 0.2);*/
+  /*--ws-color-neutral-100-on-dark: rgba(229, 238, 255, 0.15);*/
+  /*--ws-color-secondary-on-dark: rgba(23, 28, 38, 0.45);*/
+  /*--ws-color-tertiary-on-dark: rgba(229, 238, 255, 0.25);*/
+  /*--ws-color-brand-120: #e04500;*/
+  /*--ws-color-brand-100: #ff5000;*/
+  /*--ws-color-brand-80: #ff6e14;*/
+  /*--ws-color-brand-10: #ffe7dc;*/
+  /*--ws-color-accent-120: #1502c0;*/
+  /*--ws-color-accent-100: #2401fe;*/
+  /*--ws-color-accent-80: #548eff;*/
+  /*--ws-color-accent-10: rgba(23, 81, 229, 0.19);*/
+  /*--ws-color-success-120: rgba(15, 168, 68, 1);*/
+  /*--ws-color-success-100: rgba(16, 186, 76, 1);*/
+  /*--ws-color-success-80: rgba(18, 207, 84, 1);*/
+  /*--ws-color-success-10: rgba(13, 193, 67, 0.1);*/
+  /*--ws-color-pyme-100: #27418b;*/
+}
