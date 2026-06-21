@@ -1,0 +1,46 @@
+services:
+  api-backend:
+    container_name: ${BACKEND_CONTAINER_NAME}
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - ${BACKEND_PORT}:8080
+    networks:
+      - plata-network
+    restart: unless-stopped
+#    tmpfs:
+#      - /tmp:size=${TMPFS_SIZE}
+#      - /var/log:size=50m
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: ${CPU_LIMIT}
+#          memory: ${MEMORY_LIMIT}
+
+  web-frontend:
+    container_name: ${FRONTEND_CONTAINER_NAME}
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - ${FRONTEND_PORT}:4000
+    environment:
+      - GRPC_API_URL=${BACKEND_URL}
+    depends_on:
+      - api-backend
+    networks:
+      - plata-network
+    restart: unless-stopped
+#    tmpfs:
+#      - /tmp:size=${TMPFS_SIZE}
+#      - /var/log:size=50m
+#    deploy:
+#      resources:
+#        limits:
+#          cpus: ${CPU_LIMIT}
+#          memory: ${MEMORY_LIMIT}
+
+networks:
+  plata-network:
+    driver: bridge
