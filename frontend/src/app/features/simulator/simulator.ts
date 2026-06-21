@@ -5,7 +5,7 @@ import {DiscreteSlider} from '../../ui/discrete-slider/discrete-slider';
 import {MonthlyPayments} from './components/monthly-payments/monthly-payments';
 import {SimulatorService} from './simulator.service';
 import {toObservable} from '@angular/core/rxjs-interop';
-import {filter, switchMap, tap, catchError, from, of, map, timer} from 'rxjs';
+import {filter, switchMap, tap, catchError, from, of, debounceTime, map, timer} from 'rxjs';
 import {CentsToCurrencyPipe} from '../../core/pipes/cents-to-currency-pipe';
 
 @Component({
@@ -71,13 +71,14 @@ export class Simulator {
 
   private setupSimulationPipeline() {
     toObservable(this.calcData).pipe(
+      debounceTime(100),
       tap(() => {
         this.isErrorWhenCalculation.set(false);
       }),
       filter(params => this.isValid(params.amount, params.months)),
       switchMap(params => {
         // remove flickering when data arrives too fast
-        const loadingIndicator$ = timer(20).pipe(
+        const loadingIndicator$ = timer(50).pipe(
           tap(() => {
             this.monthlyPaymentsInCents.set([]);
             this.cashbackCents.set(0n);
