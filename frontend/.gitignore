@@ -6,6 +6,9 @@
 /out-tsc
 /bazel-out
 
+# Auto-generated files from .proto
+/src/app/core/generated/*
+
 # Node
 /node_modules
 npm-debug.log
