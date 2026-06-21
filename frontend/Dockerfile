@@ -1,21 +1,26 @@
+# Start your build stage
 FROM node:26.3.1-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY proto/ ./proto/
+
+COPY frontend/package*.json ./frontend/
+
+WORKDIR /app/frontend
 
 RUN npm ci
 
-COPY . .
+COPY frontend/ .
 
 RUN npm run build
 
 
-FROM node:26-alpine
+FROM node:26.3.1-alpine
 
 WORKDIR /app
 
-COPY --from=builder /app/dist/frontend ./dist/frontend
+COPY --from=builder /app/frontend/dist/frontend ./dist/frontend
 
 EXPOSE 4000
 

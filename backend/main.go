@@ -72,10 +72,10 @@ func main() {
 		}),
 	)
 
-	// 3. Direct dual handling function (Multiplexer)
+// 3. Direct dual handling function (Multiplexer)
 	httpHandler := func(w http.ResponseWriter, req *http.Request) {
-		// If it's a gRPC-Web request from the browser, route it to the wrapper
-		if wrappedServer.IsGrpcWebRequest(req) {
+		// Catch BOTH the gRPC-Web POST requests AND the browser's preflight OPTIONS requests
+		if wrappedServer.IsGrpcWebRequest(req) || wrappedServer.IsAcceptableGrpcCorsRequest(req) {
 			wrappedServer.ServeHTTP(w, req)
 			return
 		}

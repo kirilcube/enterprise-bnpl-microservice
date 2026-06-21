@@ -21,12 +21,12 @@ services:
   web-frontend:
     container_name: ${FRONTEND_CONTAINER_NAME}
     build:
-      context: ./frontend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: frontend/Dockerfile
     ports:
       - ${FRONTEND_PORT}:4000
     environment:
-      - GRPC_API_URL=${BACKEND_URL}
+      - GRPC_API_URL=${BACKEND_URL_FOR_NODE}
     depends_on:
       - api-backend
     networks:

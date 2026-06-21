@@ -1,9 +1,10 @@
-import {Component, computed, signal, viewChild} from '@angular/core';
+import {Component, computed, signal, viewChild, inject} from '@angular/core';
 import {CurrencyPipe, PercentPipe} from '@angular/common';
 import {InputCurrency} from '../../ui/input-currency/input-currency';
 import {DiscreteSlider} from '../../ui/discrete-slider/discrete-slider';
 import {BNPL_RULES} from '../../constants/bnpl.constants';
 import {MonthlyPayments} from './components/monthly-payments/monthly-payments';
+import {SimulatorService} from './simulator.service';
 
 @Component({
   selector: 'simulator',
@@ -18,6 +19,8 @@ import {MonthlyPayments} from './components/monthly-payments/monthly-payments';
   styleUrl: './simulator.css',
 })
 export class Simulator {
+  private simulatorService = inject(SimulatorService);
+
   inputCurrencyRef = viewChild(InputCurrency);
   centsAmount = computed(() => this.inputCurrencyRef()?.centsValue() ?? 0);
 
@@ -37,6 +40,22 @@ export class Simulator {
   ]);
 
   confirm() {
+    new Promise( async () => {
+      try {
+        // Call it just like a normal async function
+        const res = await this.simulatorService.calculate({
+          amountCents: BigInt(this.centsAmount()),
+          months: this.months(),
+        });
+        (BigInt.prototype as any).toJSON = function () {
+          return this.toString();
+        };
+        alert(`res: ${JSON.stringify(res)}`)
+      } catch (err) {
+        alert(`failed to connect over grpc, ${err}`);
+      }
+    })
+
     alert("This is just a simulation, confirm part is unimplemented")
   }
 }

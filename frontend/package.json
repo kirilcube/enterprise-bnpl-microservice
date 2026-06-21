@@ -14,7 +14,7 @@
     "test": "ng test",
     "serve:ssr:plataPoC": "node dist/plataPoC/server/server.mjs",
 
-    "generate:proto": "protoc --ts_out=src/app/core/generated --proto_path=../proto ../proto/*.proto"
+    "generate:proto": "protoc --ts_opt=ts_nocheck --ts_out=src/app/core/generated --proto_path=../proto ../proto/*.proto"
 
   },
   "private": true,
