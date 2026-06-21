@@ -10,7 +10,7 @@ export class InputCurrency {
   placeholder = input<string>("1 000");
   currency = input<string>("MXN");
   inputValue = signal<string>("");
-  realValue = signal<number>(0)
+  centsValue = signal<number>(0)
 
   handleInput(e: Event) {
     const inputElement = e.target as HTMLInputElement;
@@ -67,9 +67,10 @@ export class InputCurrency {
     // Apply the corrected cursor position
     inputElement.setSelectionRange(newCursorPosition, newCursorPosition);
 
-    // Update real value
-    this.realValue.set(parseFloat(
+    const float = parseFloat(
       output.replaceAll(" ", "")
-    ) || 0);
+    ) || 0
+
+    this.centsValue.set(Math.round(float * 100));
   }
 }
