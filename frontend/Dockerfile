@@ -13,7 +13,9 @@ RUN npm ci
 
 COPY frontend/ .
 
-RUN npm run build
+ARG NG_ENV=production
+
+RUN npm run build -- --configuration=$NG_ENV
 
 
 FROM node:26.3.1-alpine

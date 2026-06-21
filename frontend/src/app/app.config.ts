@@ -5,6 +5,7 @@ import {GrpcWebFetchTransport} from '@protobuf-ts/grpcweb-transport';
 
 import { routes } from './app.routes';
 import {GRPC_TRANSPORT} from './core/tokens/grpc-transport.token';
+import {environment} from '../environments/environment';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     {
       provide: GRPC_TRANSPORT,
       useFactory: () => new GrpcWebFetchTransport({
-        baseUrl: "http://localhost:8080",
+        baseUrl: environment.apiUrl,
       })
     }
   ],
