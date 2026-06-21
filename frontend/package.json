@@ -3,17 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-
-    "prestart": "npm run generate:proto",
     "start": "ng serve",
-
-    "prebuild": "npm run generate:proto",
     "build": "ng build",
-
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:plataPoC": "node dist/plataPoC/server/server.mjs",
-
     "generate:proto": "protoc --ts_opt=ts_nocheck --ts_out=src/app/core/generated --proto_path=../proto ../proto/*.proto"
 
   },
