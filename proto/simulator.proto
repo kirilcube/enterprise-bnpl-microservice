@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package simulator.v1;
+
+option go_package = "backend/gen/simulator/v1;simulatorv1";
+
+service SimulatorService {
+  rpc CalculateBNPL (CalculateBNPLRequest) returns (CalculateBNPLResponse);
+}
+
+message CalculateBNPLRequest {
+  int64 amount_cents = 1;
+  int32 months = 2;
+}
+
+message CalculateBNPLResponse {
+  int64 cashback_cents = 1;
+  int32 cashback_percents = 2;
+  repeated int64 installments = 3;
+}
