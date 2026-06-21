@@ -1,0 +1,10 @@
+<input
+  id="month-slider"
+  type="range"
+  [min]="min()"
+  [max]="max()"
+  [step]="step()"
+  [value]="value()"
+  (input)="updateValue($event)"
+  class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-brand-80 focus:outline-none"
+/>

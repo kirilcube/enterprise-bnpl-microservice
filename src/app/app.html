@@ -6,6 +6,31 @@
     <label class="block text-sm font-medium text-gray-700 mb-2">Purchase Amount</label>
     <input-currency />
   </div>
+  @if (moneyAmount()) {
+    <div class="mt-8">
+      <div class="flex justify-between items-end mb-2">
+        <label for="month-slider" class="block text-sm font-medium text-gray-700">
+          Installment Plan
+        </label>
+        <!-- Dynamic display of the current selection -->
+        <span class="text-lg font-bold text-brand-80 bg-brand-10 px-3 py-1 rounded-md">
+      {{ months() }} Months
+    </span>
+      </div>
 
+      <div class="relative w-full">
+        <discrete-slider
+          [min]="3"
+          [max]="12"
+          [step]="1"
+          [(value)]="months"
+        />
+        <div class="flex justify-between text-xs text-gray-400">
+          <span>3 min</span>
+          <span>12 max</span>
+        </div>
+      </div>
+    </div>
+  }
 </main>
 <router-outlet />
