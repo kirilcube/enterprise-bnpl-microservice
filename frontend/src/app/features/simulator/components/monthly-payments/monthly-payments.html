@@ -1,25 +1,31 @@
-<div class="text-sm text-neutral-600 font-bold">
-  <span>Monthly payment: </span>
-  @if (monthlyPaymentsAllTheSame()) {
-    <span>
-      {{monthlyPaymentsInCents()[0] / 100 | currency:'MXN'}}
-    </span>
-  }
-  @else {
-    @if(isPaymentsInfoExpanded()){
-      <div class="inline-flex flex-col cursor-pointer"
-           (click)="expandPaymentsInfo(false)"
-    >
-        @for (cents of monthlyPaymentsInCents(); track $index // $index is acceptable here) {
+@if (isAnyMonthlyPayments()) {
+  <div class="text-sm text-neutral-600 font-bold">
+    <span>Monthly payment: </span>
+      @if (monthlyPaymentsAllTheSame()) {
         <span>
-          {{ $index + 1 }}: {{cents / 100 | currency:'MXN'}}
+        {{monthlyPaymentsInCents()[0] | centsToCurrency | currency:'MXN'}}
+      </span>
+      }
+      @else {
+        @if(isPaymentsInfoExpanded()){
+          <div class="inline-flex flex-col cursor-pointer"
+               (click)="expandPaymentsInfo(false)"
+          >
+            @for (cents of monthlyPaymentsInCents(); track $index // $index is acceptable here) {
+              <span>
+            {{ $index + 1 }}: {{cents | centsToCurrency | currency:'MXN'}}
+          </span>
+            }
+          </div>
+        } @else {
+          <span class="cursor-pointer underline" (click)="expandPaymentsInfo(true)">
+          ~{{monthlyPaymentsInCents()[0] | centsToCurrency | currency:'MXN'}}
         </span>
         }
-      </div>
-    } @else {
-      <span class="cursor-pointer underline" (click)="expandPaymentsInfo(true)">
-        ~{{monthlyPaymentsInCents()[0] / 100 | currency:'MXN'}}
-      </span>
-    }
-  }
-</div>
+      }
+  </div>
+} @else {
+  <div class="text-sm text-neutral-400 font-bold">
+    <span>Monthly payment: ...</span>
+  </div>
+}

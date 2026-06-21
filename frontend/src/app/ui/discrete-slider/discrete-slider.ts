@@ -1,7 +1,7 @@
 import {Component, input, model} from '@angular/core';
 
 @Component({
-  selector: 'discrete-slider',
+  selector: 'pkb-discrete-slider',
   imports: [],
   templateUrl: './discrete-slider.html',
   styleUrl: './discrete-slider.css',
