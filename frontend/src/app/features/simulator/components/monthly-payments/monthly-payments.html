@@ -8,19 +8,29 @@
       }
       @else {
         @if(isPaymentsInfoExpanded()){
-          <div class="inline-flex flex-col cursor-pointer"
-               (click)="expandPaymentsInfo(false)"
+          <button
+            type="button"
+            class="inline-flex flex-col text-left cursor-pointer ml-2  rounded-md transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-80"
+            (click)="expandPaymentsInfo(false)"
+            aria-expanded="true"
+            aria-label="Collapse detailed monthly payments"
           >
             @for (cents of monthlyPaymentsInCents(); track $index // $index is acceptable here) {
-              <span>
-            {{ $index + 1 }}: {{cents | centsToCurrency | currency:'MXN'}}
-          </span>
+              <span class="text-sm text-neutral-700 font-medium">
+                Month {{ $index + 1 }}: {{cents | centsToCurrency | currency:'MXN'}}
+              </span>
             }
-          </div>
+          </button>
         } @else {
-          <span class="cursor-pointer underline" (click)="expandPaymentsInfo(true)">
-          ~{{monthlyPaymentsInCents()[0] | centsToCurrency | currency:'MXN'}}
-        </span>
+          <button
+            type="button"
+            class="cursor-pointer underline font-bold text-brand-80 hover:text-brand-100 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-80 rounded px-1"
+            (click)="expandPaymentsInfo(true)"
+            aria-expanded="false"
+            aria-label="Expand detailed monthly payments"
+          >
+            ~{{monthlyPaymentsInCents()[0] | centsToCurrency | currency:'MXN'}}
+          </button>
         }
       }
   </div>

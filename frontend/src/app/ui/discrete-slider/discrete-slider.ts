@@ -7,6 +7,7 @@ import {Component, input, model} from '@angular/core';
   styleUrl: './discrete-slider.css',
 })
 export class DiscreteSlider {
+  inputId = input<string>('month-slider');
   step = input<number>(1);
   min = input<number>(1);
   max = input<number>(10);

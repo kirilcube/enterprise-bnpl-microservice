@@ -7,6 +7,7 @@ import {Component, input, output, signal} from '@angular/core';
   styleUrl: './input-currency.css',
 })
 export class InputCurrency {
+  inputId = input<string>("purchase-amount-input");
   placeholder = input<string>("1 000");
   currency = input<string>("MXN");
   inputValue = signal<string>("");
