@@ -9,8 +9,6 @@
 **Backend API:** `https://plata-bnpl-poc.onrender.com`
 ---
 
-## 🎯 The Objective
-
 The goal of this project is to demonstrate my deep understanding of Banco Plata's core technology stack and my ability to independently architect, build, and deploy a production-grade microservice feature on top of it.
 
 This project simulates a Buy-Now-Pay-Later (BNPL) calculator where a modern **Angular 19** frontend (in SSR mode) communicates with a mathematically strict **Golang** backend via **gRPC-Web**. Both frontend and backend have tests to ensure reliability. It utilizes a **Multi-Stage Dockerfile build** and is deployed as a stateless API on Render for zero-cost PoC velocity. The containerized architecture is completely cloud-agnostic and **ready to be deployed to AWS ECS, EKS, or Fargate without modification.**
