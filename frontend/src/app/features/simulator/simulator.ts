@@ -1,12 +1,13 @@
 import {Component, computed, signal, inject} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
+import {toObservable} from '@angular/core/rxjs-interop';
+import {filter, switchMap, tap, catchError, from, of, debounceTime, map, timer} from 'rxjs';
 import {InputCurrency} from '../../ui/input-currency/input-currency';
 import {DiscreteSlider} from '../../ui/discrete-slider/discrete-slider';
 import {MonthlyPayments} from './components/monthly-payments/monthly-payments';
 import {SimulatorService} from './simulator.service';
-import {toObservable} from '@angular/core/rxjs-interop';
-import {filter, switchMap, tap, catchError, from, of, debounceTime, map, timer} from 'rxjs';
 import {CentsToCurrencyPipe} from '../../core/pipes/cents-to-currency-pipe';
+import {AnalyticsService} from '../../core/services/analytics.service';
 
 @Component({
   selector: 'pkb-simulator',
@@ -21,6 +22,7 @@ import {CentsToCurrencyPipe} from '../../core/pipes/cents-to-currency-pipe';
   styleUrl: './simulator.css',
 })
 export class Simulator {
+  private analytics = inject(AnalyticsService);
   private simulatorService = inject(SimulatorService);
 
   centsAmount = signal<bigint>(0n);
@@ -65,6 +67,7 @@ export class Simulator {
     //     alert(`failed to connect over grpc, ${err}`);
     //   }
     // })
+    this.analytics.trackEvent('confirm');
     alert("This is just a simulation, confirm part is unimplemented")
   }
 
