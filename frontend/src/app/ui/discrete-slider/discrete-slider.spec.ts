@@ -19,4 +19,14 @@ describe('DiscreteSlider', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('updates the model value from range input events', () => {
+    component.updateValue({
+      target: {
+        value: '7',
+      },
+    } as unknown as Event);
+
+    expect(component.value()).toBe(7);
+  });
 });

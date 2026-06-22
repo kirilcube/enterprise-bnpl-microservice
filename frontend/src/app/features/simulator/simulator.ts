@@ -1,4 +1,4 @@
-import {Component, computed, signal, viewChild, inject} from '@angular/core';
+import {Component, computed, signal, inject} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
 import {InputCurrency} from '../../ui/input-currency/input-currency';
 import {DiscreteSlider} from '../../ui/discrete-slider/discrete-slider';
@@ -23,8 +23,7 @@ import {CentsToCurrencyPipe} from '../../core/pipes/cents-to-currency-pipe';
 export class Simulator {
   private simulatorService = inject(SimulatorService);
 
-  inputCurrencyRef = viewChild(InputCurrency);
-  centsAmount = computed(() => this.inputCurrencyRef()?.centsValue() ?? 0n);
+  centsAmount = signal<bigint>(0n);
 
   months = signal<number>(3);
 

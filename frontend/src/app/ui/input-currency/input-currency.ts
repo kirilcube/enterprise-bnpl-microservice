@@ -1,4 +1,4 @@
-import {Component, input, signal} from '@angular/core';
+import {Component, input, output, signal} from '@angular/core';
 
 @Component({
   selector: 'pkb-input-currency',
@@ -10,7 +10,8 @@ export class InputCurrency {
   placeholder = input<string>("1 000");
   currency = input<string>("MXN");
   inputValue = signal<string>("");
-  centsValue = signal<bigint>(0n)
+  centsValue = signal<bigint>(0n);
+  centsChanged = output<bigint>();
 
   handleInput(e: Event) {
     const inputElement = e.target as HTMLInputElement;
@@ -71,6 +72,8 @@ export class InputCurrency {
       output.replaceAll(" ", "")
     ) || 0
 
-    this.centsValue.set(BigInt(Math.round(float * 100)));
+    const cents = BigInt(Math.round(float * 100));
+    this.centsValue.set(cents);
+    this.centsChanged.emit(cents);
   }
 }
