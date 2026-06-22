@@ -1,10 +1,11 @@
-import {Component, input, model} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input, model} from '@angular/core';
 
 @Component({
   selector: 'pkb-discrete-slider',
   imports: [],
   templateUrl: './discrete-slider.html',
   styleUrl: './discrete-slider.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DiscreteSlider {
   inputId = input<string>('month-slider');

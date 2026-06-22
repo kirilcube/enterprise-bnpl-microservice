@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import {Simulator} from './features/simulator/simulator';
 
@@ -10,6 +10,7 @@ import {Simulator} from './features/simulator/simulator';
     Simulator,
   ],
   templateUrl: './app.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class App {
 

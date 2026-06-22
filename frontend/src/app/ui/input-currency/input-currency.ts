@@ -1,10 +1,11 @@
-import {Component, input, output, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, input, output, signal} from '@angular/core';
 
 @Component({
   selector: 'pkb-input-currency',
   imports: [],
   templateUrl: './input-currency.html',
   styleUrl: './input-currency.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InputCurrency {
   inputId = input<string>("purchase-amount-input");

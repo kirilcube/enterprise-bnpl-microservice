@@ -1,4 +1,4 @@
-import {Component, computed, effect, input, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, computed, effect, input, signal} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
 import {CentsToCurrencyPipe} from '../../../../core/pipes/cents-to-currency-pipe';
 
@@ -9,6 +9,7 @@ import {CentsToCurrencyPipe} from '../../../../core/pipes/cents-to-currency-pipe
     CentsToCurrencyPipe
   ],
   templateUrl: './monthly-payments.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MonthlyPayments {
   monthlyPaymentsInCents = input.required<bigint[]>();

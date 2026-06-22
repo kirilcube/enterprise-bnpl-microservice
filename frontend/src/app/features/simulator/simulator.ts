@@ -1,4 +1,4 @@
-import {Component, computed, signal, inject} from '@angular/core';
+import {Component, computed, signal, inject, ChangeDetectionStrategy} from '@angular/core';
 import {CurrencyPipe} from '@angular/common';
 import {toObservable} from '@angular/core/rxjs-interop';
 import {filter, switchMap, tap, catchError, from, of, debounceTime, map, timer} from 'rxjs';
@@ -20,6 +20,7 @@ import {AnalyticsService} from '../../core/services/analytics.service';
   ],
   templateUrl: './simulator.html',
   styleUrl: './simulator.css',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Simulator {
   private analytics = inject(AnalyticsService);
