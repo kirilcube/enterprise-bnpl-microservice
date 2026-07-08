@@ -11,13 +11,7 @@ import {AnalyticsService} from '../../core/services/analytics.service';
 
 @Component({
   selector: 'pkb-simulator',
-  imports: [
-    InputCurrency,
-    DiscreteSlider,
-    MonthlyPayments,
-    CurrencyPipe,
-    CentsToCurrencyPipe,
-  ],
+  imports: [InputCurrency, DiscreteSlider, MonthlyPayments, CurrencyPipe, CentsToCurrencyPipe],
   templateUrl: './simulator.html',
   styleUrl: './simulator.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -39,13 +33,14 @@ export class Simulator {
       this.monthlyPaymentsInCents().length &&
       this.cashbackCents() &&
       this.cashbackPercents()
-    )
-  })
+    );
+  });
   isErrorWhenCalculation = signal<boolean>(false);
+  isWakingUpBackend = signal<boolean>(false);
 
   private calcData = computed(() => ({
     amount: this.centsAmount(),
-    months: this.months()
+    months: this.months(),
   }));
 
   constructor() {
@@ -69,50 +64,66 @@ export class Simulator {
     //   }
     // })
     this.analytics.trackEvent('confirm');
-    alert("This is just a simulation, confirm part is unimplemented")
+    alert('This is just a simulation, confirm part is unimplemented');
   }
 
   private setupSimulationPipeline() {
-    toObservable(this.calcData).pipe(
-      debounceTime(100),
-      tap(() => {
-        this.isErrorWhenCalculation.set(false);
-      }),
-      filter(params => this.isValid(params.amount, params.months)),
-      switchMap(params => {
-        // remove flickering when data arrives too fast
-        const loadingIndicator$ = timer(50).pipe(
-          tap(() => {
-            this.monthlyPaymentsInCents.set([]);
-            this.cashbackCents.set(0n);
-            this.cashbackPercents.set(0);
-          }),
-          map(() => null) // Ignore result
-        );
-        const request$ = from(this.simulatorService.calculate({
-          amountCents: BigInt(params.amount),
-          months: params.months
-        })).pipe(
-          catchError(err => {
-            console.error('Simulation failed', err);
-            this.isErrorWhenCalculation.set(true);
-            return of(null);
-          })
-        );
+    toObservable(this.calcData)
+      .pipe(
+        debounceTime(100),
+        tap(() => {
+          this.isErrorWhenCalculation.set(false);
+        }),
+        filter((params) => this.isValid(params.amount, params.months)),
+        switchMap((params) => {
+          this.isWakingUpBackend.set(false);
 
-        return loadingIndicator$.pipe(
-          switchMap(() => request$),
-        );
-      })
-    ).subscribe(response => {
-      if (response) {
-        this.monthlyPaymentsInCents.set(response.installments)
-        this.cashbackCents.set(response.cashbackCents)
-        this.cashbackPercents.set(response.cashbackPercents)
-      } else {
-        this.isErrorWhenCalculation.set(true);
-      }
-    });
+          const wakingUpTimeout = setTimeout(() => {
+            this.isWakingUpBackend.set(true);
+          }, 1500);
+
+          // remove flickering when data arrives too fast
+          const loadingIndicator$ = timer(50).pipe(
+            tap(() => {
+              this.monthlyPaymentsInCents.set([]);
+              this.cashbackCents.set(0n);
+              this.cashbackPercents.set(0);
+            }),
+            map(() => null), // Ignore result
+          );
+          const request$ = from(
+            this.simulatorService.calculate({
+              amountCents: BigInt(params.amount),
+              months: params.months,
+            }),
+          ).pipe(
+            catchError((err) => {
+              console.error('Simulation failed', err);
+              this.isErrorWhenCalculation.set(true);
+              return of(null);
+            }),
+          );
+
+          return loadingIndicator$.pipe(
+            switchMap(() => request$),
+            tap({
+              finalize: () => {
+                clearTimeout(wakingUpTimeout);
+                this.isWakingUpBackend.set(false);
+              },
+            }),
+          );
+        }),
+      )
+      .subscribe((response) => {
+        if (response) {
+          this.monthlyPaymentsInCents.set(response.installments);
+          this.cashbackCents.set(response.cashbackCents);
+          this.cashbackPercents.set(response.cashbackPercents);
+        } else {
+          this.isErrorWhenCalculation.set(true);
+        }
+      });
   }
 
   private isValid(amount: bigint, months: number): boolean {

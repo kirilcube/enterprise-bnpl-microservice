@@ -50,6 +50,11 @@
         Error when trying to connect to server. Try reloading the page.
       </div>
     }
+    @if (isWakingUpBackend()) {
+      <div class="text-shadow-yellow-300 text-sm font-bold mt-2">
+        Waking up Go backend (Free tier cold start)...
+      </div>
+    }
     <button
       type="button"
       [disabled]="!allowConfirming()"
