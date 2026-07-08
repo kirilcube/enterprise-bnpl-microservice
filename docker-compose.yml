@@ -7,7 +7,7 @@ services:
     ports:
       - ${BACKEND_PORT}:8080
     networks:
-      - plata-network
+      - bnpl-network
     restart: unless-stopped
 #    tmpfs:
 #      - /tmp:size=${TMPFS_SIZE}
@@ -32,7 +32,7 @@ services:
     depends_on:
       - api-backend
     networks:
-      - plata-network
+      - bnpl-network
     restart: unless-stopped
 #    tmpfs:
 #      - /tmp:size=${TMPFS_SIZE}
@@ -44,5 +44,5 @@ services:
 #          memory: ${MEMORY_LIMIT}
 
 networks:
-  plata-network:
+  bnpl-network:
     driver: bridge
